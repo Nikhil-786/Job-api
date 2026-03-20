@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: 06-Jobs
+  contact: {}
+  version: '1.0'
+servers:
+  - url: https://job-api-c9vb.onrender.com/api/v1
+    variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: register
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/registerrequest'
+      responses:
+        '200':
+          description: OK
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: login
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginrequest'
+      responses:
+        '200':
+          description: OK
+
+  /jobs:
+    post:
+      tags:
+        - jobs
+      summary: createJobs
+      operationId: createJobs
+      security:
+        - bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createJobsRequest'
+      responses:
+        '200':
+          description: OK
+    get:
+      tags:
+        - jobs
+      summary: getAllJobs
+      operationId: getAllJobs
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: OK
+
+  /jobs/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The jobs ID
+    get:
+      tags:
+        - jobs
+      summary: getJob
+      operationId: getJob
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+        - jobs
+      summary: updatejob
+      operationId: updatejob
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - jobs
+      summary: DeleteJob
+      operationId: DeleteJob
+      security:
+        - bearer: []
+      responses:
+        '200':
+          description: OK
+
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+  schemas:
+    registerrequest:
+      title: registerrequest
+      required:
+        - userName
+        - email
+        - password
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        userName: nikhil
+        email: nikhil1234@gmail.com
+        password: seceret
+    loginrequest:
+      title: loginrequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: pratima2275@gmail.com
+        password: seceret
+    createJobsRequest:
+      title: createJobsRequest
+      required:
+        - company
+        - position
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+      example:
+        company: google
+        position: pending
+
+tags:
+  - name: Auth
+    description: Authentication endpoints
+  - name: jobs
+    description: Job management endpoints
